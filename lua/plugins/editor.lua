@@ -2,6 +2,13 @@ return {
   -- Automatically detect indentation style
   { 'NMAC427/guess-indent.nvim', opts = {} },
 
+  { -- Visual undo history browser
+    'mbbill/undotree',
+    keys = {
+      { '<leader>u', vim.cmd.UndotreeToggle, desc = '[U]ndo tree' },
+    },
+  },
+
   { -- VimTeX for LaTeX editing
     'lervag/vimtex',
     lazy = false, -- VimTeX relies on its own lazy loading on ft=tex
@@ -13,7 +20,7 @@ return {
 
       -- Enable reverse search (Ctrl+click in Zathura jumps to source in Neovim).
       -- VimTeX needs a stable servername so Zathura can connect back via synctex.
-      vim.fn.serverstart '/tmp/nvim-vimtex.pipe'
+      pcall(vim.fn.serverstart, '/tmp/nvim-vimtex.pipe')
 
       -- Optional: Disable conceal if you prefer seeing the raw LaTeX commands
       -- vim.g.tex_conceal = ''
@@ -23,7 +30,7 @@ return {
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     config = function()
-      local filetypes = { 'bash', 'c', 'diff', 'html', 'latex', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+      local filetypes = { 'bash', 'c', 'diff', 'html', 'latex', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'python', 'query', 'r', 'vim', 'vimdoc' }
       require('nvim-treesitter').install(filetypes)
       vim.api.nvim_create_autocmd('FileType', {
         pattern = filetypes,
