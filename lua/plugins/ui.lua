@@ -26,11 +26,32 @@ return {
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
       },
+      on_attach = function(bufnr)
+        local gs = require 'gitsigns'
+        vim.keymap.set('n', ']c', function()
+          if vim.wo.diff then return ']c' end
+          vim.schedule(function() gs.next_hunk() end)
+          return '<Ignore>'
+        end, { expr = true, buffer = bufnr, desc = 'Next git hunk' })
+        vim.keymap.set('n', '[c', function()
+          if vim.wo.diff then return '[c' end
+          vim.schedule(function() gs.prev_hunk() end)
+          return '<Ignore>'
+        end, { expr = true, buffer = bufnr, desc = 'Previous git hunk' })
+      end,
     },
   },
 
-  -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  {
+    'folke/todo-comments.nvim',
+    event = 'VimEnter',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = { signs = false },
+    keys = {
+      { ']t', function() require('todo-comments').jump_next() end, desc = 'Next TODO comment' },
+      { '[t', function() require('todo-comments').jump_prev() end, desc = 'Previous TODO comment' },
+    },
+  },
 
   { -- Render markdown inline (headings, code blocks, checkboxes, tables, etc.)
     'MeanderingProgrammer/render-markdown.nvim',

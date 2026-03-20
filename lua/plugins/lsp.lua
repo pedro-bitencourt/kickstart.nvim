@@ -89,8 +89,8 @@ return {
       --  See `:help lsp-config` for information about keys and how to configure
       local servers = {
         texlab = {},
-        bashls = {},
-        r_language_server = {},
+        -- bashls = {},
+        -- r_language_server = {},
         -- clangd = {},
         -- gopls = {},
         pyright = {},

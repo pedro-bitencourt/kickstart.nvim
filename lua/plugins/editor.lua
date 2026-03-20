@@ -21,20 +21,25 @@ return {
       -- Enable reverse search (Ctrl+click in Zathura jumps to source in Neovim).
       -- VimTeX needs a stable servername so Zathura can connect back via synctex.
       pcall(vim.fn.serverstart, '/tmp/nvim-vimtex.pipe')
-
-      -- Optional: Disable conceal if you prefer seeing the raw LaTeX commands
-      -- vim.g.tex_conceal = ''
     end,
+    keys = {
+      { ']]', '<plug>(vimtex-]])', desc = 'Next section', ft = 'tex' },
+      { '[[', '<plug>(vimtex-[[)', desc = 'Previous section', ft = 'tex' },
+      { '][', '<plug>(vimtex-][)', desc = 'Next section end', ft = 'tex' },
+      { '[]', '<plug>(vimtex-[])', desc = 'Previous section end', ft = 'tex' },
+    },
   },
 
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     config = function()
-      local filetypes = { 'bash', 'c', 'diff', 'html', 'latex', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'python', 'query', 'r', 'vim', 'vimdoc' }
+      local filetypes = { 'bash', 'c', 'diff', 'html', 'latex', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'norg', 'python', 'query', 'r', 'vim', 'vimdoc' }
       require('nvim-treesitter').install(filetypes)
       vim.api.nvim_create_autocmd('FileType', {
         pattern = filetypes,
-        callback = function() vim.treesitter.start() end,
+        callback = function()
+          pcall(vim.treesitter.start)
+        end,
       })
     end,
   },
